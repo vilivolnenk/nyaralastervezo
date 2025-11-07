@@ -1,0 +1,122 @@
+const destinations = [
+    {
+        name: 'Barcelona',
+        country: 'Spanyolország',
+        emoji: '🏖️',
+        avgTemp: 28,
+        sunshine: 90,
+        humidity: 65,
+        beach: true,
+        culture: true,
+        nature: false,
+        description: 'Gyönyörű tengerparti város lenyűgöző építészettel és élénk éjszakai élettel.'
+    },
+    {
+        name: 'Santorini',
+        country: 'Görögország',
+        emoji: '🌅',
+        avgTemp: 29,
+        sunshine: 95,
+        humidity: 60,
+        beach: true,
+        culture: true,
+        nature: false,
+        description: 'Ikonikus fehér házak kék kupolákkal és lélegzetelállító naplementék.'
+    },
+    {
+        name: 'Reykjavik',
+        country: 'Izland',
+        emoji: '🌋',
+        avgTemp: 15,
+        sunshine: 60,
+        humidity: 75,
+        beach: false,
+        culture: true,
+        nature: true,
+        description: 'Természeti csodák, termálfürdők és az éjféli nap élménye.'
+    },
+    {
+        name: 'Dubrovnik',
+        country: 'Horvátország',
+        emoji: '🏰',
+        avgTemp: 27,
+        sunshine: 85,
+        humidity: 70,
+        beach: true,
+        culture: true,
+        nature: false,
+        description: 'Középkori városfalak és kristálytiszta Adriai-tenger.'
+    },
+    {
+        name: 'Amszterdam',
+        country: 'Hollandia',
+        emoji: '🚲',
+        avgTemp: 22,
+        sunshine: 65,
+        humidity: 80,
+        beach: false,
+        culture: true,
+        nature: false,
+        description: 'Csatornák, múzeumok és kerékpáros kultúra.'
+    },
+    {
+        name: 'Lisszabon',
+        country: 'Portugália',
+        emoji: '🌆',
+        avgTemp: 26,
+        sunshine: 88,
+        humidity: 68,
+        beach: true,
+        culture: true,
+        nature: false,
+        description: 'Vibráló város hegyekkel, történelemmel és fantasztikus konyhával.'
+    },
+    {
+        name: 'Prága',
+        country: 'Csehország',
+        emoji: '🏛️',
+        avgTemp: 24,
+        sunshine: 70,
+        humidity: 65,
+        beach: false,
+        culture: true,
+        nature: false,
+        description: 'Mesebeli óváros káprázatos építészettel.'
+    },
+    {
+        name: 'Interlaken',
+        country: 'Svájc',
+        emoji: '⛰️',
+        avgTemp: 20,
+        sunshine: 75,
+        humidity: 70,
+        beach: false,
+        culture: false,
+        nature: true,
+        description: 'Alpesi kalandok lélegzetelállító hegyi panorámákkal.'
+    },
+    {
+        name: 'Koppenhága',
+        country: 'Dánia',
+        emoji: '🎨',
+        avgTemp: 21,
+        sunshine: 68,
+        humidity: 75,
+        beach: false,
+        culture: true,
+        nature: false,
+        description: 'Skandináv design, fenntarthatóság és hangulatos atmoszféra.'
+    },
+    {
+        name: 'Nizza',
+        country: 'Franciaország',
+        emoji: '🌴',
+        avgTemp: 27,
+        sunshine: 92,
+        humidity: 62,
+        beach: true,
+        culture: true,
+        nature: false,
+        description: 'Francia Riviéra elegáns strandokkal és mediterrán hangulattal.'
+    }
+];
