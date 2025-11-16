@@ -1,14 +1,17 @@
 class WeatherAPI {
     constructor() {
-        this.apiKey = CONFIG.OPENWEATHER_API_KEY;
-        this.baseUrl = CONFIG.OPENWEATHER_BASE_URL;
-        this.units = CONFIG.WEATHER_UNITS;
-        this.lang = CONFIG.LANGUAGE;
+        this.apiKey = '384585717df9693d4b72f07be44723a6';
+        this.baseUrl = 'https://api.openweathermap.org/data/2.5';
+        this.corsProxy = 'https://corsproxy.io/?';
+        this.units = 'metric';
+        this.lang = 'hu';
     }
 
     async getCurrentWeather(cityName) {
         try {
-            const url = `${this.baseUrl}/weather?q=${cityName}&appid=${this.apiKey}&units=${this.units}&lang=${this.lang}`;
+            const apiUrl = `${this.baseUrl}/weather?q=${cityName}&appid=${this.apiKey}&units=${this.units}&lang=${this.lang}`;
+            const url = `${this.corsProxy}${encodeURIComponent(apiUrl)}`;
+            
             const response = await fetch(url);
             
             if (!response.ok) {
@@ -25,7 +28,9 @@ class WeatherAPI {
 
     async getForecast(cityName) {
         try {
-            const url = `${this.baseUrl}/forecast?q=${cityName}&appid=${this.apiKey}&units=${this.units}&lang=${this.lang}`;
+            const apiUrl = `${this.baseUrl}/forecast?q=${cityName}&appid=${this.apiKey}&units=${this.units}&lang=${this.lang}`;
+            const url = `${this.corsProxy}${encodeURIComponent(apiUrl)}`;
+            
             const response = await fetch(url);
             
             if (!response.ok) {
@@ -42,7 +47,9 @@ class WeatherAPI {
 
     async getWeatherByCoordinates(lat, lon) {
         try {
-            const url = `${this.baseUrl}/onecall?lat=${lat}&lon=${lon}&appid=${this.apiKey}&units=${this.units}&lang=${this.lang}`;
+            const apiUrl = `${this.baseUrl}/weather?lat=${lat}&lon=${lon}&appid=${this.apiKey}&units=${this.units}&lang=${this.lang}`;
+            const url = `${this.corsProxy}${encodeURIComponent(apiUrl)}`;
+            
             const response = await fetch(url);
             
             if (!response.ok) {
@@ -50,7 +57,7 @@ class WeatherAPI {
             }
             
             const data = await response.json();
-            return this.formatOneCallWeather(data);
+            return this.formatCurrentWeather(data);
         } catch (error) {
             console.error('Koordináta alapú időjárás hiba:', error);
             return null;
@@ -117,45 +124,25 @@ class WeatherAPI {
             icon: dailyData[date].icons[0]
         }));
     }
-
-    formatOneCallWeather(data) {
-        return {
-            current: {
-                temp: Math.round(data.current.temp),
-                humidity: data.current.humidity,
-                clouds: data.current.clouds,
-                windSpeed: data.current.wind_speed
-            },
-            daily: data.daily.map(day => ({
-                date: new Date(day.dt * 1000),
-                temp: Math.round(day.temp.day),
-                tempMin: Math.round(day.temp.min),
-                tempMax: Math.round(day.temp.max),
-                humidity: day.humidity,
-                clouds: day.clouds,
-                sunshine: Math.round(100 - day.clouds),
-                description: day.weather[0].description,
-                icon: day.weather[0].icon
-            }))
-        };
-    }
 }
 
 class PlacesAPI {
     constructor() {
-        this.apiKey = CONFIG.GOOGLE_API_KEY;
-        this.baseUrl = CONFIG.GOOGLE_PLACES_URL;
-        this.language = CONFIG.LANGUAGE;
+        this.apiKey = 'AIzaSyCeLecoAf8_UjMiCyEeb31G4__8_G8YZJA';
+        this.baseUrl = 'https://maps.googleapis.com/maps/api/place';
+        this.corsProxy = 'https://corsproxy.io/?';
+        this.language = 'hu';
     }
 
     async searchPlaces(query, location = null) {
         try {
-            let url = `${this.baseUrl}/textsearch/json?query=${encodeURIComponent(query)}&key=${this.apiKey}&language=${this.language}`;
+            let apiUrl = `${this.baseUrl}/textsearch/json?query=${encodeURIComponent(query)}&key=${this.apiKey}&language=${this.language}`;
             
             if (location) {
-                url += `&location=${location.lat},${location.lng}&radius=50000`;
+                apiUrl += `&location=${location.lat},${location.lng}&radius=50000`;
             }
 
+            const url = `${this.corsProxy}${encodeURIComponent(apiUrl)}`;
             const response = await fetch(url);
             
             if (!response.ok) {
@@ -163,7 +150,7 @@ class PlacesAPI {
             }
             
             const data = await response.json();
-            return this.formatPlaceResults(data.results);
+            return this.formatPlaceResults(data.results || []);
         } catch (error) {
             console.error('Helyszín keresési hiba:', error);
             return [];
@@ -172,7 +159,8 @@ class PlacesAPI {
 
     async getPlaceDetails(placeId) {
         try {
-            const url = `${this.baseUrl}/details/json?place_id=${placeId}&key=${this.apiKey}&language=${this.language}&fields=name,rating,formatted_address,geometry,photos,types,user_ratings_total`;
+            const apiUrl = `${this.baseUrl}/details/json?place_id=${placeId}&key=${this.apiKey}&language=${this.language}&fields=name,rating,formatted_address,geometry,photos,types,user_ratings_total`;
+            const url = `${this.corsProxy}${encodeURIComponent(apiUrl)}`;
             
             const response = await fetch(url);
             
@@ -194,7 +182,8 @@ class PlacesAPI {
 
     async getAutocompleteSuggestions(input) {
         try {
-            const url = `${this.baseUrl}/autocomplete/json?input=${encodeURIComponent(input)}&types=(cities)&key=${this.apiKey}&language=${this.language}`;
+            const apiUrl = `${this.baseUrl}/autocomplete/json?input=${encodeURIComponent(input)}&types=(cities)&key=${this.apiKey}&language=${this.language}`;
+            const url = `${this.corsProxy}${encodeURIComponent(apiUrl)}`;
             
             const response = await fetch(url);
             
@@ -203,7 +192,7 @@ class PlacesAPI {
             }
             
             const data = await response.json();
-            return data.predictions;
+            return data.predictions || [];
         } catch (error) {
             console.error('Autocomplete hiba:', error);
             return [];
@@ -227,7 +216,8 @@ class PlacesAPI {
 
     async getNearbyPlaces(location, radius = 5000, type = 'tourist_attraction') {
         try {
-            const url = `${this.baseUrl}/nearbysearch/json?location=${location.lat},${location.lng}&radius=${radius}&type=${type}&key=${this.apiKey}&language=${this.language}`;
+            const apiUrl = `${this.baseUrl}/nearbysearch/json?location=${location.lat},${location.lng}&radius=${radius}&type=${type}&key=${this.apiKey}&language=${this.language}`;
+            const url = `${this.corsProxy}${encodeURIComponent(apiUrl)}`;
             
             const response = await fetch(url);
             
@@ -236,7 +226,7 @@ class PlacesAPI {
             }
             
             const data = await response.json();
-            return this.formatPlaceResults(data.results);
+            return this.formatPlaceResults(data.results || []);
         } catch (error) {
             console.error('Közeli helyek keresési hiba:', error);
             return [];
